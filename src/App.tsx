@@ -5,18 +5,27 @@ import TodoList, { TodoItem } from "./TodoList";
 
 function App() {
   let [data, setData] = useState([
-    { Id: 1, Title: "helloo" },
-    { Id: 2, Title: "bello" },
+    { Id: 1, Title: "helloo", Checked: false },
+    { Id: 2, Title: "bello", Checked: false },
   ]);
   function onDeleteClick(id: Number) {
-    setData(data.filter((x) => x.Id != id));
+    setData(data.filter((x) => x.Id !== id));
   }
 
+  function onCheckChange(id: Number, checked: boolean) {
+    let modified = data.filter((x) => x.Id === id)[0];
+    modified.Checked = checked;
+    let newArray = [...data.filter((x) => x.Id !== id), modified];
+    setData(newArray);
+  }
   function onNewTodoAdd() {
-    if (inputValue.trim().length == 0) {
+    if (inputValue.trim().length === 0) {
       return;
     }
-    setData((prev) => [...prev, { Id: Date.now(), Title: inputValue }]);
+    setData((prev) => [
+      ...prev,
+      { Id: Date.now(), Title: inputValue, Checked: false },
+    ]);
     setInputValue("");
   }
   let [inputValue, setInputValue] = useState("");
@@ -27,7 +36,11 @@ function App() {
   }
   return (
     <div className="App">
-      <TodoList todos={data} onDeleteClick={onDeleteClick}></TodoList>
+      <TodoList
+        todos={data}
+        onDeleteClick={onDeleteClick}
+        onCheckChange={onCheckChange}
+      ></TodoList>
 
       <InputGroup className="mb-3">
         <Form.Control

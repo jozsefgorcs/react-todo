@@ -2,18 +2,17 @@ import React from "react";
 import { Button, Form, ListGroup } from "react-bootstrap";
 
 type TodoItem = {
+  Checked: boolean;
   Id: number;
   Title: String;
 };
 type TodoProps = {
   todos: TodoItem[];
   onDeleteClick: DeleteFunction;
+  onCheckChange: CheckedFunction;
 };
 type DeleteFunction = (id: Number) => void;
-
-function onCheckboxChange(e: any, id: Number) {
-  console.log(e.target.checked, id);
-}
+type CheckedFunction = (id: Number, checked: boolean) => void;
 
 function TodoList(props: TodoProps) {
   return (
@@ -21,11 +20,13 @@ function TodoList(props: TodoProps) {
       {props.todos.map((x) => (
         <ListGroup.Item key={x.Id}>
           <Form.Check
-            className="form-check-inline"
+            className={
+              "form-check-inline " + (x.Checked ? "checked-listelement" : "")
+            }
             type="checkbox"
             label={x.Title}
             onChange={(e: any) => {
-              onCheckboxChange(e, x.Id);
+              props.onCheckChange(x.Id, e.target.checked);
             }}
           />
 
