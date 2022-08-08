@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, Form, ListGroup } from "react-bootstrap";
 
 type TodoItem = {
@@ -15,6 +15,10 @@ type DeleteFunction = (id: Number) => void;
 type CheckedFunction = (id: Number, checked: boolean) => void;
 
 function TodoList(props: TodoProps) {
+  useEffect(() => {
+    console.log("use effect");
+  });
+
   return (
     <ListGroup>
       {props.todos.map((x) => (
